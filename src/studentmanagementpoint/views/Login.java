@@ -4,6 +4,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import studentmanagementpoint.dto.StudentModel;
+import studentmanagementpoint.main.Main;
 import studentmanagementpoint.service.UserService;
 
 /**
@@ -16,14 +18,15 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     public Login() {
+        this.setTitle("Đăng nhập");
         initComponents();
     }
-    
+
     private void clear() {
         txUname.setText("");
         txPasswd.setText("");
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -37,8 +40,8 @@ public class Login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txUname = new javax.swing.JTextField();
-        txPasswd = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        txPasswd = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,12 +77,12 @@ public class Login extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(3, 3, 3)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txPasswd, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txUname, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txUname, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                            .addComponent(txPasswd))))
                 .addContainerGap(47, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 123, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(99, 99, 99))
         );
@@ -105,17 +108,37 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String uname = txUname.getText();
-        String upasswd = txPasswd.getText();
-        
+        String uname = txUname.getText().trim();
+        String upasswd = new String(txPasswd.getPassword()).trim();
+        if (uname.isEmpty() || upasswd.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tên tài khoản và mật khẩu không được để trống!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         try {
-            if(UserService.authenticateUser(uname, upasswd)) {
-                JOptionPane.showMessageDialog(this, "Login successs", "Ok", JOptionPane.INFORMATION_MESSAGE);
+            if (UserService.authenticateUser(uname, upasswd)) {
+                this.setVisible(false);
+                String role = UserService.getRole();
+                if (role.equals("Admin")) {
+                    Main.formLectures.setVisible(true);
+                } else if (role.equals("Member")) {
+                    StudentModel std = UserService.getStudent(uname);
+                    System.out.println(std.toString()); 
+                    Main.formStudent.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Tài khoản của bạn bị cấm truy cập!", "WARNNING", JOptionPane.ERROR_MESSAGE);
+                    this.setVisible(true); // Hiển thị lại form đăng nhập
+                }
+                
+                JOptionPane.showMessageDialog(null, "Đăng nhập thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra trong quá trình đăng nhập!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -158,7 +181,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txPasswd;
+    private javax.swing.JPasswordField txPasswd;
     private javax.swing.JTextField txUname;
     // End of variables declaration//GEN-END:variables
 }
