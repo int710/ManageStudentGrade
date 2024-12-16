@@ -10,8 +10,7 @@ import studentmanagementpoint.views.Student;
  */
 public class Main {
     private static Login formLogin = new Login();
-    public static Lecturer formLectures = new Lecturer();
-    public static Student formStudent = new Student();
+
     public static void main(String[] args) {
         formLogin.setVisible(true);
     }
