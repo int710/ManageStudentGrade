@@ -1,5 +1,7 @@
 package studentmanagementpoint.dto;
 
+import studentmanagementpoint.service.UserService;
+
 /**
  *
  * @author Bùi Thanh Quân - int710 - CT070242
@@ -12,18 +14,19 @@ public class StudentModel {
     private String department;   // Khoa
     private String gender;       // Giới tính
     private String address;      // Địa chỉ
-    private String classId;      // Lớp học
+    private int classId;      // Lớp học
     
     public StudentModel() {
     }
 
-    public StudentModel(String studentId, String name, String dob, String department, String gender, String address) {
+    public StudentModel(String studentId, String name, String dob, String department, String gender, String address, int classId) {
         this.studentId = studentId;
         this.name = name;
         this.dob = dob;
         this.department = department;
         this.gender = gender;
         this.address = address;
+        this.classId = classId;
     }
 
     public String getStudentId() {
@@ -74,11 +77,11 @@ public class StudentModel {
         this.address = address;
     }
 
-    public String getClassId() {
+    public int getClassId() {
         return classId;
     }
 
-    public void setClassId(String classId) {
+    public void setClassId(int classId) {
         this.classId = classId;
     }
     

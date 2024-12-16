@@ -20,6 +20,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         this.setTitle("Đăng nhập");
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     private void clear() {
@@ -120,11 +121,9 @@ public class Login extends javax.swing.JFrame {
                 this.setVisible(false);
                 String role = UserService.getRole();
                 if (role.equals("Admin")) {
-                    Main.formLectures.setVisible(true);
+                    new Lecturer().setVisible(true);
                 } else if (role.equals("Member")) {
-                    StudentModel std = UserService.getStudent(uname);
-                    System.out.println(std.toString()); 
-                    Main.formStudent.setVisible(true);
+                    new Student(UserService.getStudent(uname)).setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(this, "Tài khoản của bạn bị cấm truy cập!", "WARNNING", JOptionPane.ERROR_MESSAGE);
                     this.setVisible(true); // Hiển thị lại form đăng nhập

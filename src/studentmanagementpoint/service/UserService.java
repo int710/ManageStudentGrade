@@ -56,7 +56,7 @@ public class UserService {
             pstmt.setString(1, studentId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    StudentModel std = new StudentModel(rs.getString("studentId"), rs.getString("fullName"), rs.getString("dob"), rs.getString("department"), rs.getString("gender"), rs.getString("address"));
+                    StudentModel std = new StudentModel(rs.getString("studentId"), rs.getString("fullName"), rs.getString("dob"), rs.getString("department"), rs.getString("gender"), rs.getString("address"), rs.getInt("classId"));
                     return std;
                 }
             }
@@ -79,7 +79,21 @@ public class UserService {
         }
         return null;
     }
-
+    
+    public static String getNameByClassId(int classId) {
+        String sql = "SELECT classname FROM class WHERE classId = ?";
+        try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, classId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("classname");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     private static String formatDobToDB(String dob) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date date = sdf.parse(dob);

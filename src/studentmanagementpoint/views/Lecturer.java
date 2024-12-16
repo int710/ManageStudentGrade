@@ -25,6 +25,7 @@ public class Lecturer extends javax.swing.JFrame {
         this.setTitle("Student Management");
         initComponents();
         loadClasses();
+        setLocationRelativeTo(null);
     }
 
     private void loadClasses() {
