@@ -1,6 +1,6 @@
 package studentmanagementpoint.main;
 
-import studentmanagementpoint.views.Lecturer;
+import studentmanagementpoint.views.StudentManageAdmin;
 import studentmanagementpoint.views.Login;
 import studentmanagementpoint.views.Student;
 

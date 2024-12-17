@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import studentmanagementpoint.dto.StudentModel;
+import studentmanagementpoint.utils.ConvertDate;
 import studentmanagementpoint.utils.PasswordHash;
 
 /**
@@ -50,13 +51,13 @@ public class UserService {
         return false;
     }
 
-    public static StudentModel getStudent(String studentId) {
+    public static StudentModel getStudent(String studentId) throws ParseException {
         String sql = "SELECT * FROM student WHERE studentId = ?";
         try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, studentId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    StudentModel std = new StudentModel(rs.getString("studentId"), rs.getString("fullName"), rs.getString("dob"), rs.getString("department"), rs.getString("gender"), rs.getString("address"), rs.getInt("classId"));
+                    StudentModel std = new StudentModel(rs.getString("studentId"), rs.getString("fullName"), ConvertDate.convertDateFormat(rs.getString("dob")), rs.getString("department"), rs.getString("gender"), rs.getString("address"), rs.getInt("classId"));
                     return std;
                 }
             }
@@ -79,7 +80,7 @@ public class UserService {
         }
         return null;
     }
-    
+
     public static String getNameByClassId(int classId) {
         String sql = "SELECT classname FROM class WHERE classId = ?";
         try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -92,13 +93,6 @@ public class UserService {
             e.printStackTrace();
         }
         return null;
-    }
-    
-    private static String formatDobToDB(String dob) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = sdf.parse(dob);
-        sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(date);
     }
 
     public static boolean isStudentExits(String studentId) {
@@ -145,12 +139,41 @@ public class UserService {
             pstmt.setString(2, fullName);
             pstmt.setInt(3, classId);
             pstmt.setString(4, address);
-            pstmt.setString(5, formatDobToDB(dob));
+            pstmt.setString(5, ConvertDate.formatDobToDB(dob));
             pstmt.setString(6, getDepartmentByClass(classId));
             pstmt.setString(7, gender);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean updateStudent(String studentId, String fullName, int classId, String address, String dob, String gender) {
+        String sql = "UPDATE student SET fullName = ?, classId = ?, address = ?, dob = ?, gender = ? WHERE studentId = ?";
+        try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, fullName);
+            pstmt.setInt(2, classId);
+            pstmt.setString(3, address);
+            pstmt.setString(4, ConvertDate.formatDobToDB(dob));
+            pstmt.setString(5, gender);
+            pstmt.setString(6, studentId);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException | ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean deleteStudent(String studentId) {
+        String sql = "DELETE FROM student WHERE studentId = ?";
+        try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, studentId);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

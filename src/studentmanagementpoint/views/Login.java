@@ -1,6 +1,7 @@
 package studentmanagementpoint.views;
 
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -121,7 +122,7 @@ public class Login extends javax.swing.JFrame {
                 this.setVisible(false);
                 String role = UserService.getRole();
                 if (role.equals("Admin")) {
-                    new Lecturer().setVisible(true);
+                    new HomeAdmin().setVisible(true);
                 } else if (role.equals("Member")) {
                     new Student(UserService.getStudent(uname)).setVisible(true);
                 } else {
@@ -136,6 +137,8 @@ public class Login extends javax.swing.JFrame {
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Có lỗi xảy ra trong quá trình đăng nhập!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } catch (ParseException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
