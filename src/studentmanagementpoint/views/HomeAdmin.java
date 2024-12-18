@@ -6,7 +6,9 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import studentmanagementpoint.service.TeacherService;
+import studentmanagementpoint.utils.SessionManager;
 
 /**
  *
@@ -18,8 +20,13 @@ public class HomeAdmin extends javax.swing.JFrame {
      * Creates new form Home
      */
     public HomeAdmin() {
-        initComponents();
-        setLocationRelativeTo(null);
+        if (!SessionManager.isLogin() || !SessionManager.isAdmin()) {
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập vào chức năng này!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            System.exit(0); // Đóng cửa sổ nếu không có quyền
+        } else {
+            initComponents();
+            setLocationRelativeTo(null);
+        }
     }
 
     /**

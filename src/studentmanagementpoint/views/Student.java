@@ -1,7 +1,9 @@
 package studentmanagementpoint.views;
 
+import javax.swing.JOptionPane;
 import studentmanagementpoint.dto.StudentModel;
 import studentmanagementpoint.service.UserService;
+import studentmanagementpoint.utils.SessionManager;
 
 /**
  *
@@ -11,6 +13,10 @@ public class Student extends javax.swing.JFrame {
   private StudentModel student;
 
     public Student(StudentModel student) {
+        if (!SessionManager.isLogin() || !SessionManager.isMember()) {
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập vào chức năng này!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            System.exit(0); // Đóng cửa sổ nếu không có quyền
+        }
         this.student = student;
         initComponents();
         loadData();
@@ -18,7 +24,10 @@ public class Student extends javax.swing.JFrame {
     }
     
     public Student() {
-        student.toString();
+        if (!SessionManager.isLogin() || !SessionManager.isAdmin()) {
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập vào chức năng này!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            System.exit(0); // Đóng cửa sổ nếu không có quyền
+        }
         initComponents();
     }
     

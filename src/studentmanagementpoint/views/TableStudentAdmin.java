@@ -13,6 +13,7 @@ import studentmanagementpoint.dto.StudentModel;
 import studentmanagementpoint.service.ClassService;
 import studentmanagementpoint.service.TeacherService;
 import studentmanagementpoint.service.UserService;
+import studentmanagementpoint.utils.SessionManager;
 
 /**
  *
@@ -27,6 +28,10 @@ public class TableStudentAdmin extends javax.swing.JFrame {
      * Creates new form TableStudent
      */
     public TableStudentAdmin(List<StudentModel> students) {
+        if (!SessionManager.isLogin() || !SessionManager.isAdmin()) {
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập vào chức năng này!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            System.exit(0); // Đóng cửa sổ nếu không có quyền
+        }
         this.students = students;
         initComponents();
         setSizeColumn();
@@ -36,6 +41,10 @@ public class TableStudentAdmin extends javax.swing.JFrame {
     }
 
     public TableStudentAdmin() {
+        if (!SessionManager.isLogin() || !SessionManager.isAdmin()) {
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập vào chức năng này!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            System.exit(0); // Đóng cửa sổ nếu không có quyền
+        }
         initComponents();
     }
 
