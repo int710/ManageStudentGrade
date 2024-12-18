@@ -149,14 +149,15 @@ public class UserService {
     }
 
     public static boolean updateStudent(String studentId, String fullName, int classId, String address, String dob, String gender) {
-        String sql = "UPDATE student SET fullName = ?, classId = ?, address = ?, dob = ?, gender = ? WHERE studentId = ?";
+        String sql = "UPDATE student SET fullName = ?, classId = ?, address = ?, dob = ?, department = ?, gender = ? WHERE studentId = ?";
         try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, fullName);
             pstmt.setInt(2, classId);
             pstmt.setString(3, address);
             pstmt.setString(4, ConvertDate.formatDobToDB(dob));
-            pstmt.setString(5, gender);
-            pstmt.setString(6, studentId);
+            pstmt.setString(5, getDepartmentByClass(classId));
+            pstmt.setString(6, gender);
+            pstmt.setString(7, studentId);
             pstmt.executeUpdate();
             return true;
         } catch (SQLException | ParseException e) {
@@ -165,15 +166,24 @@ public class UserService {
         return false;
     }
 
-    public static boolean deleteStudent(String studentId) {
-        String sql = "DELETE FROM student WHERE studentId = ?";
-        try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, studentId);
-            pstmt.executeUpdate();
+    public static boolean deleteStudent(String studentId) throws SQLException {
+        String sqlStudent = "DELETE FROM student WHERE studentId = ?";
+        String sqlAccount = "DELETE FROM account WHERE username = ?";
+
+        try (Connection conn = MySQLConnection.getConnection()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement pstmtStudent = conn.prepareStatement(sqlStudent)) {
+                pstmtStudent.setString(1, studentId);
+                pstmtStudent.executeUpdate();
+            }
+            try (PreparedStatement pstmtAccount = conn.prepareStatement(sqlAccount)) {
+                pstmtAccount.setString(1, studentId);
+                pstmtAccount.executeUpdate();
+            }
+            conn.commit();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         }
-        return false;
     }
 }
