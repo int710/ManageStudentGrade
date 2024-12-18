@@ -12,7 +12,7 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import studentmanagementpoint.dto.StudentModel;
 import studentmanagementpoint.utils.ConvertDate;
-import studentmanagementpoint.utils.PasswordHash;
+import studentmanagementpoint.utils.Password;
 
 /**
  *
@@ -38,7 +38,7 @@ public class UserService {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     String dbHashPw = rs.getString("password");
-                    String hash = PasswordHash.hashPassword(password);
+                    String hash = Password.hashPassword(password);
                     if (hash.equals(dbHashPw)) {
                         setRole(rs.getString("role"));
                         return true;
@@ -126,7 +126,7 @@ public class UserService {
         String sqlAccount = "INSERT INTO account(username, password) VALUES(?, ?)";
         try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sqlAccount)) {
             pstmt.setString(1, studentId);
-            pstmt.setString(2, PasswordHash.hashPassword(dob));
+            pstmt.setString(2, Password.hashPassword(dob));
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -184,6 +184,33 @@ public class UserService {
             return true;
         } catch (SQLException e) {
             throw e;
+        }
+    }
+
+    public static boolean checkOldPasswd(String username, String passOld) throws SQLException, NoSuchAlgorithmException {
+        String hashPass = Password.hashPassword(passOld); // Mã hóa mật khẩu cũ
+        String sql = "SELECT password FROM account WHERE username = ?";
+        try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return hashPass.equals(rs.getString("password"));
+            }
+        }
+        return false;
+    }
+
+    public static boolean changedPass(String username, String newPass) throws SQLException, NoSuchAlgorithmException {
+        String hashPass = Password.hashPassword(newPass);
+        String sql = "UPDATE account SET password = ? WHERE username = ?";
+        try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, hashPass);
+            pstmt.setString(2, username);
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

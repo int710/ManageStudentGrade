@@ -2,6 +2,9 @@ package studentmanagementpoint.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import studentmanagementpoint.service.UserService;
 
 /**
  *
@@ -9,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
  * Mã hóa mật khẩu với SHA-256
  */
 
-public class PasswordHash {  
+public class Password {  
     public static String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         // convert sang byte
@@ -20,5 +23,14 @@ public class PasswordHash {
             hexString.append(String.format("%02x", b));
         }
         return hexString.toString();
+    }
+    
+    public static boolean changedPassword(String username, String passOld, String passNew) throws SQLException, NoSuchAlgorithmException {
+        if(UserService.checkOldPasswd(username, passOld)) {
+            if(UserService.changedPass(username, passNew)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

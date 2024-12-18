@@ -39,7 +39,7 @@ public class HomeAdmin extends javax.swing.JFrame {
     private void initComponents() {
 
         lbImageLogo = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnChangePw = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnAllStd = new javax.swing.JButton();
@@ -51,7 +51,12 @@ public class HomeAdmin extends javax.swing.JFrame {
 
         lbImageLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/studentmanagementpoint/assets/small.png"))); // NOI18N
 
-        jButton1.setText("Đổi mật khẩu");
+        btnChangePw.setText("Đổi mật khẩu");
+        btnChangePw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangePwActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Thoát");
 
@@ -86,7 +91,7 @@ public class HomeAdmin extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel1)
-                                    .addComponent(jButton1))
+                                    .addComponent(btnChangePw))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton2))
                             .addGroup(layout.createSequentialGroup()
@@ -112,7 +117,7 @@ public class HomeAdmin extends javax.swing.JFrame {
                     .addComponent(jButton5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnChangePw)
                     .addComponent(jButton2))
                 .addGap(14, 14, 14))
         );
@@ -129,6 +134,10 @@ public class HomeAdmin extends javax.swing.JFrame {
             Logger.getLogger(HomeAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAllStdActionPerformed
+
+    private void btnChangePwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePwActionPerformed
+        new ChangePassword().setVisible(true);
+    }//GEN-LAST:event_btnChangePwActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,7 +177,7 @@ public class HomeAdmin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAllStd;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnChangePw;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
