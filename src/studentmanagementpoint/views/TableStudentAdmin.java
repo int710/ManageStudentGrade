@@ -2,6 +2,7 @@ package studentmanagementpoint.views;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
@@ -10,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import studentmanagementpoint.dto.StudentModel;
 import studentmanagementpoint.service.ClassService;
+import studentmanagementpoint.service.TeacherService;
 import studentmanagementpoint.service.UserService;
 
 /**
@@ -29,7 +31,7 @@ public class TableStudentAdmin extends javax.swing.JFrame {
         initComponents();
         setSizeColumn();
         loadClasses();
-        loadDataToTable();
+        loadDataToTable(students);
         setLocationRelativeTo(null);
     }
 
@@ -48,12 +50,16 @@ public class TableStudentAdmin extends javax.swing.JFrame {
         tableListStudent.getColumnModel().getColumn(7).setPreferredWidth(200); // Địa chỉ
     }
 
-    public void loadDataToTable() {
+    public void reloadDataTable(List<StudentModel> ds) throws SQLException, ParseException {
+        loadDataToTable(ds);
+    }
+
+    public void loadDataToTable(List<StudentModel> std) {
         DefaultTableModel tableModel = (DefaultTableModel) tableListStudent.getModel();
         tableModel.setRowCount(0);
 
         int currentIndex = 1;
-        for (StudentModel u : students) {
+        for (StudentModel u : std) {
             tableModel.addRow(new Object[]{
                 currentIndex++,
                 u.getStudentId(),
@@ -104,7 +110,8 @@ public class TableStudentAdmin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         boxClass = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
+        btnSearchByClassName = new javax.swing.JButton();
+        refresh = new javax.swing.JLabel();
 
         jLabel4.setText("jLabel4");
 
@@ -162,7 +169,21 @@ public class TableStudentAdmin extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 204, 204));
         jLabel2.setText("DANH SÁCH TẤT CẢ SINH VIÊN");
 
-        jButton2.setText("Filter");
+        boxClass.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả" }));
+
+        btnSearchByClassName.setText("Filter");
+        btnSearchByClassName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchByClassNameActionPerformed(evt);
+            }
+        });
+
+        refresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/studentmanagementpoint/assets/Refresh.png"))); // NOI18N
+        refresh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                refreshMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -170,35 +191,37 @@ public class TableStudentAdmin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(261, 261, 261)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(186, 186, 186)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSearch))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(229, 229, 229)
-                        .addComponent(btnAdd)
-                        .addGap(39, 39, 39)
-                        .addComponent(btnUpdate)
-                        .addGap(39, 39, 39)
-                        .addComponent(btnDel)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(boxClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addContainerGap())))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSearchByClassName))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(261, 261, 261)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(186, 186, 186)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(textSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSearch))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(229, 229, 229)
+                                .addComponent(btnAdd)
+                                .addGap(39, 39, 39)
+                                .addComponent(btnUpdate)
+                                .addGap(39, 39, 39)
+                                .addComponent(btnDel))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(refresh))))
+                        .addGap(0, 13, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,13 +238,14 @@ public class TableStudentAdmin extends javax.swing.JFrame {
                     .addComponent(btnAdd)
                     .addComponent(btnUpdate)
                     .addComponent(btnDel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(boxClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
-                .addGap(19, 19, 19)
+                    .addComponent(btnSearchByClassName)
+                    .addComponent(refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addContainerGap())
         );
 
         pack();
@@ -232,9 +256,14 @@ public class TableStudentAdmin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Hãy bấm chọn một sinh viên hiển thị trong bảng để thực hiện chức năng này", "Thông báo", JOptionPane.NO_OPTION);
             return;
         }
-        StudentManageAdmin init = new StudentManageAdmin(true);
-        init.updateFields(tableListStudent, selectedRow);
-        init.setVisible(true);
+        if (UserService.isStudentExits((String) tableListStudent.getValueAt(selectedRow, 1))) {
+            StudentManageAdmin init = new StudentManageAdmin(true);
+            init.updateFields(tableListStudent, selectedRow);
+            init.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Sinh viên không tồn tại, bạn không thể sửa thông tin cho người dùng này");
+        }
+
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void tableListStudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableListStudentMouseClicked
@@ -274,13 +303,47 @@ public class TableStudentAdmin extends javax.swing.JFrame {
         } else {
             int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa sinh viên " + textSearch.getText() + " này không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                UserService.deleteStudent(textSearch.getText());
-                JOptionPane.showMessageDialog(null, "Xóa sinh viên thành công!");
+                if (UserService.isStudentExits(textSearch.getText())) {
+                    try {
+                        if (UserService.deleteStudent(textSearch.getText())) {
+                            JOptionPane.showMessageDialog(null, "Xóa sinh viên thành công!");
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(TableStudentAdmin.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "404 Not found! \n Không tìm thấy sinh viên cần xóa");
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Bạn vừa hủy hành động xóa!");
             }
         }
     }//GEN-LAST:event_btnDelActionPerformed
+
+    private void refreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshMouseClicked
+        try {
+            reloadDataTable(TeacherService.getAllStudent());
+        } catch (SQLException ex) {
+            Logger.getLogger(TableStudentAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(TableStudentAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_refreshMouseClicked
+
+    private void btnSearchByClassNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchByClassNameActionPerformed
+        try {
+            int idClass = boxClass.getSelectedIndex();
+            if (idClass == 0) {
+                reloadDataTable(TeacherService.getAllStudent());
+            } else {
+                reloadDataTable(TeacherService.getListByClass(idClass));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TableStudentAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(TableStudentAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSearchByClassNameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -323,12 +386,13 @@ public class TableStudentAdmin extends javax.swing.JFrame {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDel;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnSearchByClassName;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel refresh;
     private javax.swing.JTable tableListStudent;
     private javax.swing.JTextField textSearch;
     // End of variables declaration//GEN-END:variables
