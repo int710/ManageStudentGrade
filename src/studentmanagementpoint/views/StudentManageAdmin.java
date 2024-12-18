@@ -15,6 +15,7 @@ import studentmanagementpoint.config.MySQLConnection;
 import studentmanagementpoint.service.ClassService;
 import studentmanagementpoint.service.TeacherService;
 import studentmanagementpoint.service.UserService;
+import studentmanagementpoint.utils.SessionManager;
 
 /**
  *
@@ -26,6 +27,10 @@ public class StudentManageAdmin extends javax.swing.JFrame {
      * Creates new form Lecturer
      */
     public StudentManageAdmin(boolean btnUpdateShow) {
+        if (!SessionManager.isLogin() || !SessionManager.isAdmin()) {
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập vào chức năng này!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            System.exit(0); // Đóng cửa sổ nếu không có quyền
+        }
         this.setTitle("Student Management");
         initComponents();
         loadClasses();

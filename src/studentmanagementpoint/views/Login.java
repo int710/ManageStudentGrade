@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import studentmanagementpoint.dto.StudentModel;
 import studentmanagementpoint.main.Main;
 import studentmanagementpoint.service.UserService;
+import studentmanagementpoint.utils.SessionManager;
 
 /**
  *
@@ -116,21 +117,26 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Tên tài khoản và mật khẩu không được để trống!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         try {
             if (UserService.authenticateUser(uname, upasswd)) {
                 this.setVisible(false);
                 String role = UserService.getRole();
-                if (role.equals("Admin")) {
+                
+                // Luư thông tin của người dùng đăng nhập vào state
+                SessionManager.login(uname, role);
+                
+                System.out.println(role);
+                
+                if (SessionManager.isAdmin()) {
                     new HomeAdmin().setVisible(true);
-                } else if (role.equals("Member")) {
+                } else if (SessionManager.isMember()) {
                     new Student(UserService.getStudent(uname)).setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(this, "Tài khoản của bạn bị cấm truy cập!", "WARNNING", JOptionPane.ERROR_MESSAGE);
                     this.setVisible(true); // Hiển thị lại form đăng nhập
+                    return;
                 }
-                
-                JOptionPane.showMessageDialog(null, "Đăng nhập thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Đăng nhập thành công! \n" + "Xin chào " + SessionManager.getUsername() , "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
