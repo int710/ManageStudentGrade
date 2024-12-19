@@ -57,7 +57,7 @@ public class UserService {
             pstmt.setString(1, studentId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    StudentModel std = new StudentModel(rs.getString("studentId"), rs.getString("fullName"), ConvertDate.convertDateFormat(rs.getString("dob")), rs.getString("department"), rs.getString("gender"), rs.getString("address"), rs.getInt("classId"));
+                    StudentModel std = new StudentModel(rs.getString("studentId"), rs.getString("fullName"), ConvertDate.convertDateFormat(rs.getString("dob")), rs.getInt("departmentId"), rs.getString("gender"), rs.getString("address"), rs.getInt("classId"));
                     return std;
                 }
             }
@@ -67,13 +67,13 @@ public class UserService {
         return null;
     }
 
-    public static String getDepartmentByClass(int classId) {
-        String sql = "SELECT description FROM class WHERE classId = ?";
+    public static String getNameDepartmentById(int departmentId) {
+        String sql = "SELECT departmentName FROM department WHERE departmentId = ?";
         try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, classId);
+            pstmt.setInt(1, departmentId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                return rs.getString("description");
+                return rs.getString("departmentName");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -133,14 +133,14 @@ public class UserService {
         }
 
         // Tiến hành thêm thông tin sinh viên 
-        String sqlStudent = "INSERT INTO student (studentId, fullName, classId, address, dob, department, gender) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sqlStudent = "INSERT INTO student (studentId, fullName, classId, address, dob, departmentId, gender) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sqlStudent)) {
             pstmt.setString(1, studentId);
             pstmt.setString(2, fullName);
             pstmt.setInt(3, classId);
             pstmt.setString(4, address);
             pstmt.setString(5, ConvertDate.formatDobToDB(dob));
-            pstmt.setString(6, getDepartmentByClass(classId));
+            pstmt.setInt(6, getDepartmentIdByClass(classId));
             pstmt.setString(7, gender);
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -149,13 +149,13 @@ public class UserService {
     }
 
     public static boolean updateStudent(String studentId, String fullName, int classId, String address, String dob, String gender) {
-        String sql = "UPDATE student SET fullName = ?, classId = ?, address = ?, dob = ?, department = ?, gender = ? WHERE studentId = ?";
+        String sql = "UPDATE student SET fullName = ?, classId = ?, address = ?, dob = ?, departmentId = ?, gender = ? WHERE studentId = ?";
         try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, fullName);
             pstmt.setInt(2, classId);
             pstmt.setString(3, address);
             pstmt.setString(4, ConvertDate.formatDobToDB(dob));
-            pstmt.setString(5, getDepartmentByClass(classId));
+            pstmt.setInt(5, getDepartmentIdByClass(classId));
             pstmt.setString(6, gender);
             pstmt.setString(7, studentId);
             pstmt.executeUpdate();
@@ -164,6 +164,20 @@ public class UserService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static int getDepartmentIdByClass(int classId) {
+        String sql = "SELECT departmentId FROM class WHERE classId = ?";
+        try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, classId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("departmentId");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public static boolean deleteStudent(String studentId) throws SQLException {

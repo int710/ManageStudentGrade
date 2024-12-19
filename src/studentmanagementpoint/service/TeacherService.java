@@ -23,7 +23,7 @@ public class TeacherService {
         try (Connection conn = MySQLConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                StudentModel std = new StudentModel(rs.getString("studentId"), rs.getString("fullName"), ConvertDate.convertDateFormat(rs.getString("dob")), rs.getString("department"), rs.getString("gender"), rs.getString("address"), rs.getInt("classId"));
+                StudentModel std = new StudentModel(rs.getString("studentId"), rs.getString("fullName"), ConvertDate.convertDateFormat(rs.getString("dob")), rs.getInt("departmentId"), rs.getString("gender"), rs.getString("address"), rs.getInt("classId"));
                 students.add(std);
             }
             return students;
@@ -37,7 +37,7 @@ public class TeacherService {
             pstmt.setInt(1, classId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                StudentModel std = new StudentModel(rs.getString("studentId"), rs.getString("fullName"), ConvertDate.convertDateFormat(rs.getString("dob")), rs.getString("department"), rs.getString("gender"), rs.getString("address"), rs.getInt("classId"));
+                StudentModel std = new StudentModel(rs.getString("studentId"), rs.getString("fullName"), ConvertDate.convertDateFormat(rs.getString("dob")), rs.getInt("departmentId"), rs.getString("gender"), rs.getString("address"), rs.getInt("classId"));
                 students.add(std);
             }
             return students;

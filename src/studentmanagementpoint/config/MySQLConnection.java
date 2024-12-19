@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class MySQLConnection {
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/quanli_diem";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/db_quanlidiem";
     private static final String DB_USERNAME = "root";
     private static final String DB_PASS = "07102004";
 

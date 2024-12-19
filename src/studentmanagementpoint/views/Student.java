@@ -20,7 +20,7 @@ public class Student extends javax.swing.JFrame {
         this.student = student;
         initComponents();
         loadData();
-         setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
     }
     
     public Student() {
@@ -38,7 +38,7 @@ public class Student extends javax.swing.JFrame {
        txDob.setText(student.getDob());
        txGender.setText(student.getGender());
        txClass.setText(UserService.getNameByClassId(student.getClassId()));
-       txDepartment.setText(student.getDepartment());
+       txDepartment.setText(student.getNameDepartment());
     }
 
 
