@@ -11,7 +11,7 @@ public class StudentModel {
     private String studentId;    // Mã sinh viên
     private String name;         // Tên sinh viên
     private String dob;          // Ngày sinh
-    private String department;   // Khoa
+    private int departmentId;   // Khoa
     private String gender;       // Giới tính
     private String address;      // Địa chỉ
     private int classId;      // Lớp học
@@ -19,11 +19,11 @@ public class StudentModel {
     public StudentModel() {
     }
 
-    public StudentModel(String studentId, String name, String dob, String department, String gender, String address, int classId) {
+    public StudentModel(String studentId, String name, String dob, int departmentId, String gender, String address, int classId) {
         this.studentId = studentId;
         this.name = name;
         this.dob = dob;
-        this.department = department;
+        this.departmentId = departmentId;
         this.gender = gender;
         this.address = address;
         this.classId = classId;
@@ -53,12 +53,16 @@ public class StudentModel {
         this.dob = dob;
     }
 
-    public String getDepartment() {
-        return department;
+    public int getDepartmentId() {
+        return departmentId;
+    }
+    
+    public String getNameDepartment() {
+        return UserService.getNameDepartmentById(departmentId);
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
     }
 
     public String getGender() {
@@ -84,6 +88,8 @@ public class StudentModel {
     public void setClassId(int classId) {
         this.classId = classId;
     }
+
+
     
 
     // Override phương thức toString() để dễ dàng in thông tin sinh viên
@@ -94,7 +100,7 @@ public class StudentModel {
                 ", name='" + name + '\'' +
                 ", dob='" + dob + '\'' +
                 ", classId='" + classId + '\'' +
-                ", department='" + department + '\'' +
+                ", departmentId='" + departmentId+ '\'' +
                 ", gender='" + gender + '\'' +
                 ", address='" + address + '\'' +
                 '}';

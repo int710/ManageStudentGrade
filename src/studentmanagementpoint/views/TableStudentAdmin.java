@@ -76,7 +76,7 @@ public class TableStudentAdmin extends javax.swing.JFrame {
                 u.getGender(),
                 u.getDob(),
                 UserService.getNameByClassId(u.getClassId()),
-                u.getDepartment(),
+                u.getNameDepartment(),
                 u.getAddress()
             });
         }
@@ -298,7 +298,7 @@ public class TableStudentAdmin extends javax.swing.JFrame {
                 DefaultTableModel tableModel = (DefaultTableModel) tableListStudent.getModel();
                 tableModel.setRowCount(0);
                 int currentIndex = 1;
-                tableModel.addRow(new Object[]{currentIndex++, u.getStudentId(), u.getName(), u.getGender(), u.getDob(), UserService.getNameByClassId(u.getClassId()), u.getDepartment(), u.getAddress()});
+                tableModel.addRow(new Object[]{currentIndex++, u.getStudentId(), u.getName(), u.getGender(), u.getDob(), UserService.getNameByClassId(u.getClassId()), u.getNameDepartment(), u.getAddress()});
                 tableListStudent.setModel(tableModel);
             } else {
                 JOptionPane.showMessageDialog(this, "404 Not found ! \n Không tìm thấy sinh viên !");
