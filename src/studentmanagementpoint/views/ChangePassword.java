@@ -45,7 +45,7 @@ public class ChangePassword extends javax.swing.JFrame {
         txPassNew = new javax.swing.JPasswordField();
         txConfirmPw = new javax.swing.JPasswordField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Mật khẩu cũ:");
 

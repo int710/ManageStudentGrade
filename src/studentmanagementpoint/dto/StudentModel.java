@@ -88,8 +88,10 @@ public class StudentModel {
     public void setClassId(int classId) {
         this.classId = classId;
     }
-
-
+    
+    public String getNameByClassId() {
+        return UserService.getNameByClassId(classId);
+    }
     
 
     // Override phương thức toString() để dễ dàng in thông tin sinh viên
