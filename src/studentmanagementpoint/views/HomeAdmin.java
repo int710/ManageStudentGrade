@@ -7,7 +7,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import studentmanagementpoint.dto.StudentModel;
 import studentmanagementpoint.service.TeacherService;
+import studentmanagementpoint.service.UserService;
 import studentmanagementpoint.utils.SessionManager;
 
 /**
@@ -72,6 +74,11 @@ public class HomeAdmin extends javax.swing.JFrame {
         });
 
         jButton4.setText("Tra điểm");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("jButton5");
 
@@ -138,6 +145,25 @@ public class HomeAdmin extends javax.swing.JFrame {
     private void btnChangePwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePwActionPerformed
         new ChangePassword().setVisible(true);
     }//GEN-LAST:event_btnChangePwActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        String input = JOptionPane.showInputDialog(this, "Nhập mã sinh viên:", "Tra cứu điểm", HEIGHT);
+        StudentModel student = null;
+        try {
+            student = UserService.getStudent(input);
+        } catch (ParseException ex) {
+            Logger.getLogger(HomeAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (student != null) {
+            try {
+                new GradenStudentAdmin(student).setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(HomeAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "404 Not found ! \n Không tìm thấy sinh viên !", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments

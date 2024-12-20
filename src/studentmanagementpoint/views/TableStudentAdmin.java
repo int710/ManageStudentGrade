@@ -248,10 +248,11 @@ public class TableStudentAdmin extends javax.swing.JFrame {
                     .addComponent(btnUpdate)
                     .addComponent(btnDel))
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(boxClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearchByClassName)
-                    .addComponent(refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(boxClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearchByClassName)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -267,7 +268,7 @@ public class TableStudentAdmin extends javax.swing.JFrame {
         }
         if (UserService.isStudentExits((String) tableListStudent.getValueAt(selectedRow, 1))) {
             StudentManageAdmin init = new StudentManageAdmin(true);
-            init.updateFields(tableListStudent, selectedRow);
+            init.updateFieldsInTable(tableListStudent, selectedRow);
             init.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Sinh viên không tồn tại, bạn không thể sửa thông tin cho người dùng này");
