@@ -49,7 +49,7 @@ public class StudentManageAdmin extends javax.swing.JFrame {
     }
 
     // Hàm này thực hiện fill dữ liệu từ cột được chọn trong bảng
-    public void updateFields(JTable table, int rowSelected) {
+    public void updateFieldsInTable(JTable table, int rowSelected) {
         if (rowSelected != -1) {
             txStudenId.setText((String) table.getValueAt(rowSelected, 1));
             txStudenId.setEnabled(false);
