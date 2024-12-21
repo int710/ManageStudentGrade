@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import studentmanagementpoint.config.MySQLConnection;
 import studentmanagementpoint.dto.GradeModel;
+import studentmanagementpoint.dto.StudyResultModel;
 
 /**
  *
@@ -118,6 +119,7 @@ public class GradenService {
             }
             return grade;
         }
-
     }
+    
+    
 }
