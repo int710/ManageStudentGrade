@@ -3,12 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Workspace/JavaOOP/CNPM/StudentManagementPoint/src/studentmanagementpoint/utils/SessionManager.java</file>
             <file>file:/D:/Workspace/JavaOOP/CNPM/StudentManagementPoint/src/studentmanagementpoint/views/Student.java</file>
             <file>file:/D:/Workspace/JavaOOP/CNPM/StudentManagementPoint/src/studentmanagementpoint/views/TableStudentAdmin.java</file>
-            <file>file:/D:/Workspace/JavaOOP/CNPM/StudentManagementPoint/src/studentmanagementpoint/service/UserService.java</file>
-            <file>file:/D:/Workspace/JavaOOP/CNPM/StudentManagementPoint/src/studentmanagementpoint/service/TeacherService.java</file>
-            <file>file:/D:/Workspace/JavaOOP/CNPM/StudentManagementPoint/src/studentmanagementpoint/views/StudentManageAdmin.java</file>
+            <file>file:/D:/Workspace/JavaOOP/CNPM/StudentManagementPoint/src/studentmanagementpoint/views/ChangePassword.java</file>
             <file>file:/D:/Workspace/JavaOOP/CNPM/StudentManagementPoint/src/studentmanagementpoint/views/Login.java</file>
             <file>file:/D:/Workspace/JavaOOP/CNPM/StudentManagementPoint/src/studentmanagementpoint/views/HomeAdmin.java</file>
         </group>
