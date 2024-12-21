@@ -91,6 +91,6 @@ public class GradeModel {
     }
 
     public String statusSubject() {
-        return finalGrade <= 4 ? "Học lại" : "Hoành thành";
+        return finalGrade <= 4 ? "Học lại" : "Đạt";
     }
 }
