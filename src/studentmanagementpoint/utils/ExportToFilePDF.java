@@ -15,7 +15,7 @@ public class ExportToFilePDF {
     public static boolean exportTableToPDF(JTable table, String filePath, String studentName, String studentID, String className, String dob, String faculty, String address, float gpa, String xeploai, int passCredit, int failCredit) {
         try {
             // Đường dẫn font
-            BaseFont baseFont = BaseFont.createFont("D:\\Workspace\\JavaOOP\\CNPM\\StudentManagementPoint\\src\\studentmanagementpoint\\assets\\font\\times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont baseFont = BaseFont.createFont("\\src\\studentmanagementpoint\\assets\\font\\times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
             Font titleFont = new Font(baseFont, 16, Font.BOLD);
             Font headerFont = new Font(baseFont, 12, Font.BOLD);
